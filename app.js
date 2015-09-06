@@ -65,13 +65,15 @@ app.use(function(err, req, res, next) {
     });
 });
 
-// app.use('/', routes);
-// app.listen(3000);
-// console.log("something happening");
+app.use('/', routes);
+app.listen(3000);
+console.log("something happening");
 
-app.get('/', routes.index);
-app.get('/users', user.list);
+// app.get('/', routes.index);
+// app.get('/users', user.list);
 
-http.createServer(app).listen("3000", function() {
-    console.log('Express server listening on port ' + app.get('port'));
-});
+// http.createServer(app).listen("3000", function() {
+// console.log('Express server listening on port ' + app.get('port'));
+// });
+
+module.exports = app;
