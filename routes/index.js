@@ -7,9 +7,17 @@ var crypto = require('crypto');
 var User = require('../models/user.js');
 // var Post = require("../models/post.js");
 
+function checkLogin(req, res, next) {
+    if (!req.session.user) {
+        req.flash('error', 'not logged');
+        return res.redirect('/login');
+    }
+    next();
+}
+
 function checkNotLogin(req, res, next) {
     if (req.session.user) {
-        req.flash('error', 'loggined');
+        req.flash('error', 'logged');
         return res.redirect('/');
     }
     next();
@@ -98,6 +106,14 @@ router.post("/login", function(req, res) {
         req.flash('success', 'Login successfully');
         res.redirect('/');
     });
+});
+
+// logout route
+router.get("/logout", checkLogin);
+router.get("/logout", function(req, res) {
+    req.session.user = null;
+    req.flash('success', 'logout successfully');
+    res.redirect('/');
 });
 
 module.exports = router;
