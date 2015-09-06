@@ -18,9 +18,6 @@ var user = require('./routes/user');
 
 var app = express();
 
-// TODO: Remove http module
-var http = require('http');
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -44,7 +41,6 @@ app.use(session({
 }));
 
 app.use(function(req, res, next) {
-    console.log("app.usr local");
     res.locals.user = req.session.user;
     // res.locals.post = req.session.post;
     var error = req.flash('error');
@@ -54,6 +50,21 @@ app.use(function(req, res, next) {
     res.locals.success = success.length ? success : null;
     next();
 });
+
+app.use('/', routes);
+app.listen(3000);
+console.log("Server is running");
+// TODO: use users
+// app.use('/users', users);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
+
+// error handlers
 
 // development error handler
 // will print stacktrace
@@ -76,9 +87,5 @@ app.use(function(err, req, res, next) {
         error : {}
     });
 });
-
-app.use('/', routes);
-app.listen(3000);
-console.log("something happening");
 
 module.exports = app;
