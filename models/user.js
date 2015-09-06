@@ -32,14 +32,16 @@ User.prototype.save = function save(callback) {
             }
 
             console.log("user insert:" + user);
-            // collection.ensureIndex('name', {unique: true});
+            collection.ensureIndex('name', {
+                unique : true
+            });
 
-            // collection.insert(user, {
-            // safe : true
-            // }, function(err, user) {
-            // mongodb.close();
-            // callback(err, user);
-            // });
+            collection.insert(user, {
+                safe : true
+            }, function(err, user) {
+                mongodb.close();
+                callback(err, user);
+            });
         });
     });
 };
@@ -66,7 +68,6 @@ User.get = function get(username, callback) {
             }, function(err, doc) {
                 mongodb.close();
                 if (doc) {
-
                     var user = new User(doc);
                     callback(err, user);
                 } else {
