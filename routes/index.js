@@ -7,20 +7,26 @@
 //        title : 'Express'
 //    });
 //};
-// 引入需要的模块
 var express = require('express');
 var router = express.Router();
 var crypto = require('crypto');
 // var User = require('../models/user.js');
 // var Post = require("../models/post.js");
 
-// 主页路由
+// Home route
 router.get('/', function(req, res) {
     res.render('index', {
-        title : '首页',
+        title : 'HOME',
         user : req.session.user,
         success : req.flash('success').toString(),
         error : req.flash('error').toString()
+    });
+});
+
+// Rigistry route
+router.get("/reg", function(req, res) {
+    res.render("reg", {
+        title : "User Registry"
     });
 });
 
