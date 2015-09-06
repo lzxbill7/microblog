@@ -71,4 +71,33 @@ router.post("/reg", function(req, res) {
     });
 });
 
+// login route
+router.get("/login", checkNotLogin);
+router.get("/login", function(req, res) {
+    res.render("login", {
+        title : "User login",
+    });
+});
+
+router.post("/login", checkNotLogin);
+router.post("/login", function(req, res) {
+    var md5 = crypto.createHash('md5');
+    var password = md5.update(req.body.password).digest('base64');
+
+    User.get(req.body.username, function(err, user) {
+        if (!user) {
+            req.flash('error', 'User does not exist');
+            return res.redirect('/login');
+        }
+
+        if (user.password !== password) {
+            req.flash('error', 'password error');
+            return res.redirect('/login');
+        }
+        req.session.user = user;
+        req.flash('success', 'Login successfully');
+        res.redirect('/');
+    });
+});
+
 module.exports = router;
