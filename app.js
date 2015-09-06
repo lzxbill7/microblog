@@ -1,7 +1,6 @@
 /**
  * Module dependencies.
  */
-
 var express = require('express');
 var path = require('path');
 var favicon = require('static-favicon');
@@ -16,8 +15,10 @@ var flash = require('connect-flash');
 
 var routes = require('./routes/index');
 var user = require('./routes/user');
+
 var app = express();
 
+// TODO: Remove http module
 var http = require('http');
 
 // view engine setup
@@ -33,6 +34,14 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
+
+// session
+app.use(session({
+    secret : settings.cookieSecret,
+    store : new MongoStore({
+        db : settings.db,
+    })
+}));
 
 // development error handler
 // will print stacktrace
